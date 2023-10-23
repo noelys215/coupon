@@ -52,10 +52,10 @@ export default function App() {
 				<Input
 					style={{ textAlign: 'center' }}
 					type="number"
-					value={result.toFixed(2)}
+					value={result?.toFixed(2)}
 					placeholder="Result"
 					readOnly
-					onClick={() => navigator.clipboard.writeText(result.toFixed(2))}
+					onClick={() => navigator.clipboard.writeText(result?.toFixed(2))}
 				/>
 			</CardBody>
 			<Divider />
