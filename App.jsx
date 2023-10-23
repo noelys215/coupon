@@ -5,6 +5,9 @@ export default function App() {
 	const [number, setNumber] = useState('');
 	const [result, setResult] = useState(null);
 	const [percentage, setPercentage] = useState(null);
+	const [showClickedText, setShowClickedText] = useState(false);
+	const [showUpcText, setShowUpcText] = useState(false);
+
 	let upc = 'BMSM EOQ - 98153000004823328273281008';
 
 	const calculatePercentage = (value) => {
@@ -31,6 +34,19 @@ export default function App() {
 			setPercentage(null);
 		}
 	};
+
+	const handleResultClick = () => {
+		navigator.clipboard.writeText(result?.toFixed(2));
+		setShowClickedText(true);
+		setTimeout(() => setShowClickedText(false), 200);
+	};
+
+	const handleUpcClick = () => {
+		navigator.clipboard.writeText(upc);
+		setShowUpcText(true);
+		setTimeout(() => setShowUpcText(false), 200);
+	};
+
 	return (
 		<Card className="w-[400px]">
 			<CardHeader className="flex gap-2 justify-center">
@@ -50,30 +66,36 @@ export default function App() {
 					variant="bordered"
 				/>
 				<Input
+					color="primary"
 					style={{ textAlign: 'center' }}
 					type="number"
-					value={result?.toFixed(2)}
-					placeholder="Result"
+					value={showClickedText ? 'copied' : result?.toFixed(2)}
+					placeholder={showClickedText ? 'COPIED' : 'Result'}
 					readOnly
-					onClick={() => navigator.clipboard.writeText(result?.toFixed(2))}
+					onClick={handleResultClick}
 				/>
 			</CardBody>
 			<Divider />
 
 			<CardFooter className="justify-center">
 				<Input
+					color="secondary"
 					style={{ textAlign: 'center' }}
 					type="text"
-					value={upc}
+					value={showUpcText ? 'COPIED' : upc}
+					placeholder={showUpcText ? 'COPIED' : upc}
 					readOnly
-					onClick={() => navigator.clipboard.writeText(upc)}
+					onClick={handleUpcClick}
 				/>
 			</CardFooter>
 			<Divider />
 			<CardFooter
 				className="justify-center"
 				style={{ textAlign: 'center', textTransform: 'uppercase' }}>
-				no affiliation with any company, any upc similarities are pure coincidence
+				<p>
+					no affiliation with any company{<br />}
+					any upc similarities are pure coincidence
+				</p>
 			</CardFooter>
 		</Card>
 	);
