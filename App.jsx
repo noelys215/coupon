@@ -25,11 +25,13 @@ export default function App() {
 
 	const handleChange = (event) => {
 		const inputValue = event.target.value;
-		setNumber(inputValue);
-		if (inputValue) {
-			const calculatedResult = calculatePercentage(Number(inputValue));
+		const numericValue = parseFloat(inputValue);
+		if (!isNaN(numericValue) && numericValue.toString() === inputValue) {
+			setNumber(inputValue);
+			const calculatedResult = calculatePercentage(numericValue);
 			setResult(calculatedResult);
-		} else {
+		} else if (inputValue === '') {
+			setNumber('');
 			setResult(null);
 			setPercentage(null);
 		}
@@ -50,13 +52,14 @@ export default function App() {
 	return (
 		<Card className="w-[400px]">
 			<CardHeader className="flex gap-2 justify-center">
-				<p className="text-lg">Percentage: </p>
+				<p style={{ fontSize: '1.3rem' }}>Percentage:</p> {!percentage && '🏴‍☠️'}
 				<div className="flex flex-col">
 					<p>{percentage !== null && <span>{percentage}%</span>}</p>
 				</div>
 			</CardHeader>
 			<Divider />
 			<CardBody className="flex gap-3">
+				{/* Input Subtotal Here */}
 				<Input
 					style={{ textAlign: 'center' }}
 					type="number"
@@ -65,9 +68,10 @@ export default function App() {
 					placeholder="Enter Subtotal"
 					variant="bordered"
 				/>
+				{/* Result Displayed Here */}
 				<Input
 					color="primary"
-					style={{ textAlign: 'center' }}
+					style={{ textAlign: 'center', cursor: 'pointer' }}
 					type="number"
 					value={showClickedText ? 'copied' : result?.toFixed(2)}
 					placeholder={showClickedText ? 'COPIED' : 'Result'}
@@ -80,7 +84,7 @@ export default function App() {
 			<CardFooter className="justify-center">
 				<Input
 					color="secondary"
-					style={{ textAlign: 'center' }}
+					style={{ textAlign: 'center', cursor: 'pointer' }}
 					type="text"
 					value={showUpcText ? 'COPIED' : upc}
 					placeholder={showUpcText ? 'COPIED' : upc}
