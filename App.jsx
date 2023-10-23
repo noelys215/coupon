@@ -7,19 +7,25 @@ export default function App() {
 	const [percentage, setPercentage] = useState(null);
 	const [showClickedText, setShowClickedText] = useState(false);
 	const [showUpcText, setShowUpcText] = useState(false);
-
-	let upc = 'BMSM EOQ - 98153000004823328273281008';
+	// Current UPC
+	const upc = 'BMSM EOQ - 98153000004823328273281008';
 
 	const calculatePercentage = (value) => {
+		// Initialize the percentage variable to store the discount rate
 		let percentage = 0;
+		// If the value is less than 2000, set the discount rate to 5%
 		if (value < 2000) {
 			percentage = 5;
+			// If the value is between 2000 and 4000 (inclusive), set the discount rate to 10%
 		} else if (value >= 2000 && value <= 4000) {
 			percentage = 10;
+			// If the value is greater than 4000, set the discount rate to 15%
 		} else if (value > 4000) {
-			percentage = 15; // Updated from 10 to 15 for values greater than 4000
+			percentage = 15;
 		}
+		// Update the percentage state with the calculated discount rate
 		setPercentage(percentage);
+		// Calculate and return the discounted amount by applying the discount rate to the input value
 		return (value * percentage) / 100;
 	};
 
@@ -83,7 +89,7 @@ export default function App() {
 
 			<CardFooter className="justify-center">
 				<Input
-					color="secondary"
+					color="primary"
 					style={{ textAlign: 'center', cursor: 'pointer' }}
 					type="text"
 					value={showUpcText ? 'COPIED' : upc}
