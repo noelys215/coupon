@@ -1,66 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Divider, Input } from '@nextui-org/react';
 
 export default function App() {
-	const [number, setNumber] = useState('');
-	const [result, setResult] = useState(null);
-	const [percentage, setPercentage] = useState(null);
-	const [showClickedText, setShowClickedText] = useState(false);
-	const [showUpcText, setShowUpcText] = useState(false);
+	const [state, setState] = useState({
+		number: '',
+		result: null,
+		percentage: null,
+		showClickedText: false,
+		showUpcText: false,
+	});
+
 	// Current UPC
 	const upc = 'BMSM EOQ - 98153000004823328273281008';
+	//
+	const resultTimeoutId = useRef(null);
+	const upcTimeoutId = useRef(null);
+
+	useEffect(() => {
+		// Cleanup timeouts when component unmounts
+		return () => {
+			if (resultTimeoutId.current) clearTimeout(resultTimeoutId.current);
+			if (upcTimeoutId.current) clearTimeout(upcTimeoutId.current);
+		};
+	}, []);
 
 	const calculatePercentage = (value) => {
-		// Initialize the percentage variable to store the discount rate
 		let percentage = 0;
-		// If the value is less than 2000, set the discount rate to 5%
 		if (value < 2000) {
 			percentage = 5;
-			// If the value is between 2000 and 4000 (inclusive), set the discount rate to 10%
-		} else if (value >= 2000 && value <= 4000) {
+		} else if (value <= 4000) {
 			percentage = 10;
-			// If the value is greater than 4000, set the discount rate to 15%
-		} else if (value > 4000) {
+		} else {
 			percentage = 15;
 		}
-		// Update the percentage state with the calculated discount rate
-		setPercentage(percentage);
-		// Calculate and return the discounted amount by applying the discount rate to the input value
-		return (value * percentage) / 100;
+		const discountedAmount = (value * percentage) / 100;
+		setState((prev) => ({ ...prev, result: discountedAmount, percentage }));
 	};
 
 	const handleChange = (event) => {
 		const inputValue = event.target.value;
 		const numericValue = parseFloat(inputValue);
 		if (!isNaN(numericValue) && numericValue.toString() === inputValue) {
-			setNumber(inputValue);
-			const calculatedResult = calculatePercentage(numericValue);
-			setResult(calculatedResult);
+			setState((prev) => ({ ...prev, number: inputValue }));
+			calculatePercentage(numericValue);
 		} else if (inputValue === '') {
-			setNumber('');
-			setResult(null);
-			setPercentage(null);
+			setState({
+				number: '',
+				result: null,
+				percentage: null,
+				showClickedText: false,
+				showUpcText: false,
+			});
 		}
 	};
 
 	const handleResultClick = () => {
-		navigator.clipboard.writeText(result?.toFixed(2));
-		setShowClickedText(true);
-		setTimeout(() => setShowClickedText(false), 200);
+		if (state.result !== null) {
+			navigator.clipboard.writeText(state.result.toFixed(2));
+			setState((prev) => ({ ...prev, showClickedText: true }));
+			resultTimeoutId.current = setTimeout(
+				() => setState((prev) => ({ ...prev, showClickedText: false })),
+				200
+			);
+		}
 	};
 
 	const handleUpcClick = () => {
 		navigator.clipboard.writeText(upc);
-		setShowUpcText(true);
-		setTimeout(() => setShowUpcText(false), 200);
+		setState((prev) => ({ ...prev, showUpcText: true }));
+		upcTimeoutId.current = setTimeout(
+			() => setState((prev) => ({ ...prev, showUpcText: false })),
+			200
+		);
 	};
 
 	return (
 		<Card className="w-[400px]">
 			<CardHeader className="flex gap-2 justify-center">
-				<p style={{ fontSize: '1.3rem' }}>Percentage:</p> {!percentage && '🏴‍☠️'}
+				<p style={{ fontSize: '1.3rem' }}>Percentage:</p> {!state?.percentage && '🏴‍☠️'}
 				<div className="flex flex-col">
-					<p>{percentage !== null && <span>{percentage}%</span>}</p>
+					<p>{state?.percentage !== null && <span>{state?.percentage}%</span>}</p>
 				</div>
 			</CardHeader>
 			<Divider />
@@ -69,7 +88,7 @@ export default function App() {
 				<Input
 					style={{ textAlign: 'center' }}
 					type="number"
-					value={number}
+					value={state?.number}
 					onChange={handleChange}
 					placeholder="Enter Subtotal"
 					variant="bordered"
@@ -79,26 +98,27 @@ export default function App() {
 					color="primary"
 					style={{ textAlign: 'center', cursor: 'pointer' }}
 					type="number"
-					value={showClickedText ? 'copied' : result?.toFixed(2)}
-					placeholder={showClickedText ? 'COPIED' : 'Result'}
+					value={state?.showClickedText ? 'copied' : state?.result?.toFixed(2)}
+					placeholder={state?.showClickedText ? 'COPIED' : 'Result'}
 					readOnly
 					onClick={handleResultClick}
 				/>
 			</CardBody>
 			<Divider />
-
+			{/* UPC */}
 			<CardFooter className="justify-center">
 				<Input
 					color="primary"
 					style={{ textAlign: 'center', cursor: 'pointer' }}
 					type="text"
-					value={showUpcText ? 'COPIED' : upc}
-					placeholder={showUpcText ? 'COPIED' : upc}
+					value={state?.showUpcText ? 'COPIED' : upc}
+					placeholder={state?.showUpcText ? 'COPIED' : upc}
 					readOnly
 					onClick={handleUpcClick}
 				/>
 			</CardFooter>
 			<Divider />
+			{/* Disclaimer */}
 			<CardFooter
 				className="justify-center"
 				style={{ textAlign: 'center', textTransform: 'uppercase' }}>
