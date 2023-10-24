@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Divider, Input } from '@nextui-org/react';
+import { Card, CardHeader, CardBody, CardFooter, Divider, Input, Button } from '@nextui-org/react';
 
 export default function App() {
 	const [state, setState] = useState({
@@ -38,13 +38,16 @@ export default function App() {
 	};
 
 	const handleChange = (event) => {
-		const inputValue = event.target.value;
-		const numericValue = parseFloat(inputValue);
-		if (!isNaN(numericValue) && numericValue.toString() === inputValue) {
-			setState((prev) => ({ ...prev, number: inputValue }));
+		// Remove commas from the input value before processing
+		const cleanedInputValue = event.target.value.replace(/,/g, '');
+		const numericValue = parseFloat(cleanedInputValue);
+
+		if (!isNaN(numericValue) && numericValue.toString() === cleanedInputValue) {
+			setState((prev) => ({ ...prev, number: cleanedInputValue }));
 			calculatePercentage(numericValue);
-		} else if (inputValue === '') {
+		} else if (cleanedInputValue === '') {
 			setState({
+				...state,
 				number: '',
 				result: null,
 				percentage: null,
@@ -93,31 +96,27 @@ export default function App() {
 					placeholder="Enter Subtotal"
 					variant="bordered"
 				/>
+
 				{/* Result Displayed Here */}
-				<Input
-					color="primary"
-					style={{ textAlign: 'center', cursor: 'pointer' }}
-					type="number"
-					value={state?.showClickedText ? 'copied' : state?.result?.toFixed(2)}
-					placeholder={state?.showClickedText ? 'COPIED' : 'Result'}
-					readOnly
+				<Button
 					onClick={handleResultClick}
-				/>
+					color={!state.result ? 'danger' : 'success'}
+					disabled={!state?.result}>
+					{state?.showClickedText
+						? 'COPIED'
+						: state?.result
+						? state?.result.toFixed(2)
+						: 'Result'}
+				</Button>
+
+				{/* UPC */}
+				<Divider />
+				<Button onClick={handleUpcClick} color="secondary">
+					{state?.showUpcText ? 'COPIED' : upc}
+				</Button>
 			</CardBody>
 			<Divider />
-			{/* UPC */}
-			<CardFooter className="justify-center">
-				<Input
-					color="primary"
-					style={{ textAlign: 'center', cursor: 'pointer' }}
-					type="text"
-					value={state?.showUpcText ? 'COPIED' : upc}
-					placeholder={state?.showUpcText ? 'COPIED' : upc}
-					readOnly
-					onClick={handleUpcClick}
-				/>
-			</CardFooter>
-			<Divider />
+
 			{/* Disclaimer */}
 			<CardFooter
 				className="justify-center"
