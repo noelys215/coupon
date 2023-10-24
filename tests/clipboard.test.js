@@ -8,9 +8,7 @@ const mockClipboard = {
 };
 global.navigator.clipboard = mockClipboard;
 
-beforeEach(() => {
-	jest.clearAllMocks();
-});
+beforeEach(() => jest.clearAllMocks());
 
 test('handleUpcClick copies the UPC to the clipboard', () => {
 	render(<App />);

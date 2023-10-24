@@ -37,17 +37,40 @@ export default function App() {
 		setState((prev) => ({ ...prev, result: discountedAmount, percentage }));
 	};
 
-	const handleChange = (event) => {
-		// Remove commas from the input value before processing
-		const cleanedInputValue = event.target.value.replace(/,/g, '');
-		const numericValue = parseFloat(cleanedInputValue);
+	// const handleChange = (event) => {
+	// 	// Remove commas from the input value before processing
+	// 	const cleanedInputValue = event.target.value.replace(/,/g, '');
 
-		if (!isNaN(numericValue) && numericValue.toString() === cleanedInputValue) {
-			setState((prev) => ({ ...prev, number: cleanedInputValue }));
+	// 	const numericValue = parseFloat(cleanedInputValue);
+
+	// 	if (!isNaN(numericValue) && numericValue.toString() === cleanedInputValue) {
+	// 		setState((prev) => ({ ...prev, number: cleanedInputValue }));
+	// 		calculatePercentage(numericValue);
+	// 	} else if (cleanedInputValue === '') {
+	// 		setState({
+	// 			...state,
+	// 			number: '',
+	// 			result: null,
+	// 			percentage: null,
+	// 			showClickedText: false,
+	// 			showUpcText: false,
+	// 		});
+	// 	}
+	// };
+
+	const handleChange = (event) => {
+		let inputValue = event.target.value;
+
+		// Remove any non-numeric characters except for the decimal point
+		inputValue = inputValue.replace(/[^\d.]/g, '');
+
+		const numericValue = parseFloat(inputValue);
+
+		if (!isNaN(numericValue)) {
+			setState((prev) => ({ ...prev, number: inputValue }));
 			calculatePercentage(numericValue);
-		} else if (cleanedInputValue === '') {
+		} else if (inputValue === '') {
 			setState({
-				...state,
 				number: '',
 				result: null,
 				percentage: null,
@@ -63,7 +86,7 @@ export default function App() {
 			setState((prev) => ({ ...prev, showClickedText: true }));
 			resultTimeoutId.current = setTimeout(
 				() => setState((prev) => ({ ...prev, showClickedText: false })),
-				200
+				350
 			);
 		}
 	};
@@ -73,7 +96,7 @@ export default function App() {
 		setState((prev) => ({ ...prev, showUpcText: true }));
 		upcTimeoutId.current = setTimeout(
 			() => setState((prev) => ({ ...prev, showUpcText: false })),
-			200
+			350
 		);
 	};
 
@@ -90,7 +113,7 @@ export default function App() {
 				{/* Input Subtotal Here */}
 				<Input
 					style={{ textAlign: 'center' }}
-					type="number"
+					type="text"
 					value={state?.number}
 					onChange={handleChange}
 					placeholder="Enter Subtotal"
