@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Divider, Input, Button } from '@nextui-org/react';
+/* "vite": "4.1.4" */
 
 export default function App() {
 	const [state, setState] = useState({
@@ -37,27 +38,6 @@ export default function App() {
 		setState((prev) => ({ ...prev, result: discountedAmount, percentage }));
 	};
 
-	// const handleChange = (event) => {
-	// 	// Remove commas from the input value before processing
-	// 	const cleanedInputValue = event.target.value.replace(/,/g, '');
-
-	// 	const numericValue = parseFloat(cleanedInputValue);
-
-	// 	if (!isNaN(numericValue) && numericValue.toString() === cleanedInputValue) {
-	// 		setState((prev) => ({ ...prev, number: cleanedInputValue }));
-	// 		calculatePercentage(numericValue);
-	// 	} else if (cleanedInputValue === '') {
-	// 		setState({
-	// 			...state,
-	// 			number: '',
-	// 			result: null,
-	// 			percentage: null,
-	// 			showClickedText: false,
-	// 			showUpcText: false,
-	// 		});
-	// 	}
-	// };
-
 	const handleChange = (event) => {
 		let inputValue = event.target.value;
 
@@ -82,7 +62,7 @@ export default function App() {
 
 	const handleResultClick = () => {
 		if (state.result !== null) {
-			navigator.clipboard.writeText(state.result.toFixed(2));
+			navigator.clipboard.writeText('-' + state.result.toFixed(2));
 			setState((prev) => ({ ...prev, showClickedText: true }));
 			resultTimeoutId.current = setTimeout(
 				() => setState((prev) => ({ ...prev, showClickedText: false })),
@@ -100,6 +80,39 @@ export default function App() {
 		);
 	};
 
+	//
+	const handlePasteClearClick = async () => {
+		if (state.number) {
+			// If there is something in the input, clear it
+			setState({
+				...state,
+				number: '',
+				result: null,
+				percentage: null,
+			});
+		} else {
+			// If the input is empty, try to paste from the clipboard
+			try {
+				const text = await navigator.clipboard.readText();
+				// Remove $ signs, commas, and any non-numeric characters except for the decimal point
+				const cleanedText = text.replace(/[$,]/g, '').replace(/[^\d.]/g, '');
+				const numericValue = parseFloat(cleanedText);
+
+				if (!isNaN(numericValue)) {
+					setState({
+						...state,
+						number: cleanedText,
+						result: null,
+						percentage: null,
+					});
+					calculatePercentage(numericValue);
+				}
+			} catch (err) {
+				console.error('Failed to read clipboard contents: ', err);
+			}
+		}
+	};
+
 	return (
 		<Card className="w-[400px]">
 			<CardHeader className="flex gap-2 justify-center">
@@ -110,15 +123,23 @@ export default function App() {
 			</CardHeader>
 			<Divider />
 			<CardBody className="flex gap-3">
-				{/* Input Subtotal Here */}
-				<Input
-					style={{ textAlign: 'center' }}
-					type="text"
-					value={state?.number}
-					onChange={handleChange}
-					placeholder="Enter Subtotal"
-					variant="bordered"
-				/>
+				<div style={{ display: 'flex', gap: 10 }}>
+					{/* Input Subtotal Here */}
+					<Input
+						style={{ textAlign: 'center' }}
+						type="text"
+						value={state?.number}
+						onChange={handleChange}
+						placeholder="Enter Subtotal"
+						variant="bordered"
+					/>
+					<Button
+						onClick={handlePasteClearClick}
+						variant={state?.number ? 'ghost' : 'solid'}
+						color="warning">
+						{state.number ? 'CLEAR' : 'PASTE'}
+					</Button>
+				</div>
 
 				{/* Result Displayed Here */}
 				<Button
@@ -128,8 +149,8 @@ export default function App() {
 					{state?.showClickedText
 						? 'COPIED'
 						: state?.result
-						? state?.result.toFixed(2)
-						: 'Result'}
+						? '-' + state?.result.toFixed(2)
+						: 'DISCOUNT'}
 				</Button>
 
 				{/* UPC */}

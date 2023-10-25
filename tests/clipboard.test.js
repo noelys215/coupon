@@ -8,7 +8,9 @@ const mockClipboard = {
 };
 global.navigator.clipboard = mockClipboard;
 
-beforeEach(() => jest.clearAllMocks());
+beforeEach(() => {
+	jest.clearAllMocks();
+});
 
 test('handleUpcClick copies the UPC to the clipboard', () => {
 	render(<App />);
@@ -26,9 +28,9 @@ test('handleResultClick copies the result to the clipboard', () => {
 	const inputField = screen.getByPlaceholderText('Enter Subtotal');
 	fireEvent.change(inputField, { target: { value: '2500' } });
 
-	const resultButton = screen.getByText('250.00');
+	const resultButton = screen.getByText('-250.00');
 	fireEvent.click(resultButton);
 
-	expect(mockClipboard.writeText).toHaveBeenCalledWith('250.00');
+	expect(mockClipboard.writeText).toHaveBeenCalledWith('-250.00');
 	expect(screen.getByText('COPIED')).toBeInTheDocument();
 });

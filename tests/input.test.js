@@ -1,25 +1,32 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import App from '../App'; // Adjust the import according to your file structure
+import App from '../App';
 
-test('input fields work and display correct percentage', () => {
-	render(<App />);
+describe('App component', () => {
+	test('handles input change and calculates percentage', () => {
+		render(<App />);
+		const input = screen.getByPlaceholderText('Enter Subtotal');
+		const resultButton = screen.getByText('DISCOUNT');
 
-	// Find the input field
-	const inputField = screen.getByPlaceholderText('Enter Subtotal');
+		// Test input with a value less than 2000
+		fireEvent.change(input, { target: { value: '1500' } });
+		expect(input.value).toBe('1500');
+		expect(resultButton.textContent).toBe('-75.00');
 
-	// Type a value into the input field
-	fireEvent.change(inputField, { target: { value: '2500' } });
+		// Test input with a value between 2000 and 4000
+		fireEvent.change(input, { target: { value: '3500' } });
+		expect(input.value).toBe('3500');
+		expect(resultButton.textContent).toBe('-350.00');
 
-	// Check if the result and percentage are displayed correctly
-	expect(screen.getByText('250.00')).toBeInTheDocument();
-	expect(screen.getByText('10%')).toBeInTheDocument();
+		// Test input with a value greater than 4000
+		fireEvent.change(input, { target: { value: '5000' } });
+		expect(input.value).toBe('5000');
+		expect(resultButton.textContent).toBe('-750.00');
 
-	// Test with another value
-	fireEvent.change(inputField, { target: { value: '4500' } });
-
-	// Check if the result and percentage are updated correctly
-	expect(screen.getByText('675.00')).toBeInTheDocument();
-	expect(screen.getByText('15%')).toBeInTheDocument();
+		// Test input with a non-numeric value
+		fireEvent.change(input, { target: { value: 'abcd' } });
+		expect(input.value).toBe('');
+		expect(resultButton.textContent).toBe('DISCOUNT');
+	});
 });
