@@ -114,7 +114,9 @@ export default function App() {
 	};
 
 	return (
-		<Card className="w-[400px]" style={{ border: 'solid 2px #FFFFF0' }}>
+		<Card
+			className="w-[400px]"
+			style={{ border: 'solid 2px #FFFFF0', fontFamily: 'Inter', fontWeight: 200 }}>
 			<CardHeader className="flex gap-2 justify-center">
 				<p style={{ fontSize: '1.3rem', color: '#FFFFF0' }}>Percentage:</p>{' '}
 				{!state?.percentage && '🏴‍☠️'}
@@ -166,7 +168,11 @@ export default function App() {
 			{/* Disclaimer */}
 			<CardFooter
 				className="justify-center"
-				style={{ textAlign: 'center', color: '#FFFFF0' }}>
+				style={{
+					textAlign: 'center',
+					color: '#FFFFF0',
+					fontSize: '.9rem',
+				}}>
 				<p>
 					Not associated with any corporation.{<br />}
 					Any UPC resemblances are entirely coincidental.
