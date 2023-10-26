@@ -114,9 +114,10 @@ export default function App() {
 	};
 
 	return (
-		<Card className="w-[400px]">
+		<Card className="w-[400px]" style={{ border: 'solid 2px #FFFFF0' }}>
 			<CardHeader className="flex gap-2 justify-center">
-				<p style={{ fontSize: '1.3rem' }}>Percentage:</p> {!state?.percentage && '🏴‍☠️'}
+				<p style={{ fontSize: '1.3rem', color: '#FFFFF0' }}>Percentage:</p>{' '}
+				{!state?.percentage && '🏴‍☠️'}
 				<div className="flex flex-col">
 					<p>{state?.percentage !== null && <span>{state?.percentage}%</span>}</p>
 				</div>
@@ -145,7 +146,8 @@ export default function App() {
 				<Button
 					onClick={handleResultClick}
 					color={!state.result ? 'danger' : 'success'}
-					disabled={!state?.result}>
+					disabled={!state?.result}
+					style={{ color: '#FFFFF0' }}>
 					{state?.showClickedText
 						? 'COPIED'
 						: state?.result
@@ -155,7 +157,7 @@ export default function App() {
 
 				{/* UPC */}
 				<Divider />
-				<Button onClick={handleUpcClick} color="secondary">
+				<Button onClick={handleUpcClick} color="secondary" style={{ color: '#FFFFF0' }}>
 					{state?.showUpcText ? 'COPIED' : upc}
 				</Button>
 			</CardBody>
@@ -164,10 +166,10 @@ export default function App() {
 			{/* Disclaimer */}
 			<CardFooter
 				className="justify-center"
-				style={{ textAlign: 'center', textTransform: 'uppercase' }}>
+				style={{ textAlign: 'center', color: '#FFFFF0' }}>
 				<p>
-					no affiliation with any company{<br />}
-					any upc similarities are pure coincidence
+					Not associated with any corporation.{<br />}
+					Any UPC resemblances are entirely coincidental.
 				</p>
 			</CardFooter>
 		</Card>
