@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Divider, Input, Button } from '@nextui-org/react';
-/* "vite": "4.1.4" */
 
 export default function App() {
 	const [state, setState] = useState({
