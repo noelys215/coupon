@@ -10,7 +10,8 @@ export default function App() {
 		showUpcText: false,
 	});
 
-	// Current UPC
+	// Current UPC -
+	//TODO Will Be Replaced
 	const upc = 'BMSM EOQ - 98153000004823328273281008';
 	//
 	const resultTimeoutId = useRef(null);
