@@ -25,6 +25,7 @@ export default function App() {
 		};
 	}, []);
 
+	// Calculates percentage of input
 	const calculatePercentage = (value) => {
 		let percentage = 0;
 		if (value < 2000) {
@@ -60,6 +61,7 @@ export default function App() {
 		}
 	};
 
+	// Displays Result and Copies To Clipboard when clicked
 	const handleResultClick = () => {
 		if (state.result !== null) {
 			navigator.clipboard.writeText('-' + state.result.toFixed(2));
@@ -71,6 +73,7 @@ export default function App() {
 		}
 	};
 
+	// Displays Current UPC and Copies To Clipboard when clicked
 	const handleUpcClick = () => {
 		navigator.clipboard.writeText(upc);
 		setState((prev) => ({ ...prev, showUpcText: true }));
@@ -80,7 +83,7 @@ export default function App() {
 		);
 	};
 
-	//
+	// Handles Paste/Clear, toggles between pasting from clipboard and clearing the input
 	const handlePasteClearClick = async () => {
 		if (state.number) {
 			// If there is something in the input, clear it
