@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { Button } from '@nextui-org/react';
+import { upc } from '../utils/utils';
 
 export default function UpcButton({ showUpcText, setState }) {
 	//TODO Current UPC
-	const upc = 'BMSM EOQ - 98153000004823328273281008';
+
 	const upcTimeoutId = useRef(null);
 
 	useEffect(() => {
