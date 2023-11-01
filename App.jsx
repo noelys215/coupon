@@ -1,6 +1,10 @@
 import React from 'react';
 import PercentageCalc from './src/components/PercentageCalc';
-
+import { GlobalStateProvider } from './src/context/GlobalStateContext';
 export default function App() {
-	return <PercentageCalc />;
+	return (
+		<GlobalStateProvider>
+			<PercentageCalc />
+		</GlobalStateProvider>
+	);
 }

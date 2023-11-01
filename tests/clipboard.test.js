@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { upc } from '../src/utils/utils';
 import '@testing-library/jest-dom';
 import App from '../App';
 
@@ -15,10 +16,10 @@ beforeEach(() => {
 test('handleUpcClick copies the UPC to the clipboard', () => {
 	render(<App />);
 
-	const upcButton = screen.getByText('BMSM EOQ - 98153000004823328273281008');
+	const upcButton = screen.getByText(upc);
 	fireEvent.click(upcButton);
 
-	expect(mockClipboard.writeText).toHaveBeenCalledWith('BMSM EOQ - 98153000004823328273281008');
+	expect(mockClipboard.writeText).toHaveBeenCalledWith(upc);
 	expect(screen.getByText('COPIED')).toBeInTheDocument();
 });
 

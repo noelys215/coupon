@@ -3,15 +3,11 @@ import { Card, CardHeader, CardBody, CardFooter, Divider } from '@nextui-org/rea
 import UpcButton from './UpcButton';
 import ResultButton from './ResultButton';
 import InputField from './InputField';
+import { useGlobalState } from '../context/GlobalStateContext';
 
 export default function PercentageCalc() {
-	const [state, setState] = useState({
-		number: '',
-		result: null,
-		percentage: null,
-		showClickedText: false,
-		showUpcText: false,
-	});
+	// Global States
+	const [state, setState] = useGlobalState();
 
 	return (
 		<Card

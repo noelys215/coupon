@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Button } from '@nextui-org/react';
 import { upc } from '../utils/utils';
+import { useGlobalState } from '../context/GlobalStateContext';
 
-export default function UpcButton({ showUpcText, setState }) {
-	//TODO Current UPC
+export default function UpcButton({ showUpcText }) {
+	// Global States
+	const [state, setState] = useGlobalState();
 
 	const upcTimeoutId = useRef(null);
 

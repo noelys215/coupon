@@ -1,7 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Button } from '@nextui-org/react';
+import { useGlobalState } from '../context/GlobalStateContext';
 
-export default function ResultButton({ result, showClickedText, setState, state }) {
+export default function ResultButton({ result, showClickedText }) {
+	// Global States
+	const [state, setState] = useGlobalState();
+	//
 	const resultTimeoutId = useRef(null);
 	useEffect(() => {
 		// Cleanup timeouts when component unmounts

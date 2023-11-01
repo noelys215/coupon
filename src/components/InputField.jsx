@@ -1,8 +1,12 @@
 import React from 'react';
 import { Input, Button } from '@nextui-org/react';
 import { calculatePercentage } from '../utils/utils';
+import { useGlobalState } from '../context/GlobalStateContext';
 
-export default function InputField({ value, state, setState, number }) {
+export default function InputField({ value, number }) {
+	// Global States
+	const [state, setState] = useGlobalState();
+	//
 	const handleChange = (event) => {
 		let inputValue = event.target.value;
 
