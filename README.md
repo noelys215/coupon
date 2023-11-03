@@ -75,12 +75,6 @@ Contributions are welcome and greatly appreciated. If you have suggestions for h
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## Contact
-
-Your Name - [your-email@example.com](mailto:your-email@example.com)
-
-Project Link: [https://github.com/your*username*/Project-Name](https://github.com/your_username_/Project-Name)
-
 ## Acknowledgements
 
 -   [Next UI](https://nextui.org/)
