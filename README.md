@@ -61,6 +61,8 @@ Follow the instructions below to set up the app locally for development and test
 
 To run the tests, use the following command:
 
+npm test
+
 ## Contributing
 
 Contributions are welcome and greatly appreciated. If you have suggestions for how to improve this app, please fork the repo and create a pull request.
@@ -73,7 +75,7 @@ Contributions are welcome and greatly appreciated. If you have suggestions for h
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License.
 
 ## Acknowledgements
 
