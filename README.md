@@ -73,10 +73,6 @@ Contributions are welcome and greatly appreciated. If you have suggestions for h
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
-
-Distributed under the MIT License.
-
 ## Acknowledgements
 
 -   [Next UI](https://nextui.org/)
