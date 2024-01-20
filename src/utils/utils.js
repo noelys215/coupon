@@ -14,4 +14,4 @@ export const calculatePercentage = (value) => {
 
 // Current UPC, subject to change
 // export const upc = 'BMSM EOQ - 98153000004823328273281008';
-export const upc = 'BMSM EOQ - 72527273070';
+export const upc = 'BMSM EOQ - REDACTED';
