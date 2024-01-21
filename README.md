@@ -17,6 +17,7 @@
 
 ## Overview
 
+_UNAVAILABLE_
 This Percentage Calculator App is a React-based application that enables users to calculate discounts based on user input, display a static UPC code, and provide clipboard functionalities for quick copy actions. Designed with a focus on user experience, the app provides a clean and intuitive interface for efficient interactions.
 
 ## Features
